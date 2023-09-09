@@ -1,10 +1,9 @@
 name: Increment Version
 description: Increment System.Version
 inputs:
-  initial_version:
+    version:
     description: Initial version (e.g. 1.0.0.0)
     required: true
-    default: "1.0.0.0"
   increment:
     description: Increment value
     required: true
@@ -27,6 +26,6 @@ runs:
         $revision = [Math]::Floor($versionNumber % 10)
         return [Version]::new($major, $minor, $build, $revision)
       }
-      $version = [String](Increment-Version "${{ env.initial_version }}" {{env. increment}})
+      $version = [String](Increment-Version "${{ inputs.version }}" {{env. increment}})
       Write-Output "version=$version" >> $env:GITHUB_OUTPUT
     
