@@ -1,9 +1,9 @@
 name: Increment Version
 description: Increment System.Version
 inputs:
-    version:
-      description: Initial version (e.g. 1.0.0.0)
-      required: true
+  version:
+    description: Initial version (e.g. 1.0.0.0)
+    required: true
   increment:
     description: Increment value
     required: true
