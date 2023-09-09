@@ -1,0 +1,32 @@
+name: Increment Version
+description: Increment System.Version
+inputs:
+  initial_version:
+    description: Initial version (e.g. 1.0.0.0)
+    required: true
+    default: "1.0.0.0"
+  increment:
+    description: Increment value
+    required: true
+    default: "1"
+outputs:
+  version:
+    description: Incremented version
+    value: ${{ steps.increment-version.outputs.version }}
+runs:
+  using: composite
+  steps:
+  - id: increment-version
+    shell: pwsh
+    run: |
+      function Increment-Version([Version] $version, [Int] $value) {
+        $versionNumber = [Math]::Max(1, $version.Major) * 1000 + $version.Minor * 100 + $version.Build * 10 + $version.Revision + $value
+        $major = [Math]::Floor($versionNumber / 1000)
+        $minor = [Math]::Floor($versionNumber / 100 % 10)
+        $build = [Math]::Floor($versionNumber / 10 % 10)
+        $revision = [Math]::Floor($versionNumber % 10)
+        return [Version]::new($major, $minor, $build, $revision)
+      }
+      $version = [String](Increment-Version "${{ env.initial_version }}" {{env. increment}})
+      Write-Output "version=$version" >> $env:GITHUB_OUTPUT
+    
