@@ -26,6 +26,6 @@ runs:
         $revision = [Math]::Floor($versionNumber % 10)
         return [Version]::new($major, $minor, $build, $revision)
       }
-      $version = [String](Increment-Version "${{inputs.version}}" {{inputs.increment}})
+      $version = [String](Increment-Version "${{inputs.version}}" [Int]{{inputs.increment}})
       Write-Output "version=$version" >> $env:GITHUB_OUTPUT
     
